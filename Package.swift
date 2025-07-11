@@ -24,22 +24,32 @@ let package = Package(
                 "lib/Makefile.PS2_IOP",
                 "lib/Makefile.PS3_PPU",
                 "lib/Makefile.PS4",
+                "include/esp",
+                "include/xbox", 
+                "include/ps3",
+                "include/ps2",
+                "include/amiga_os",
+                "include/picow",
+                "include/apple",  // This should exclude the apple config
             ],
             sources: [
                 "lib",
             ],
             publicHeadersPath: ".",
             cSettings: [
+                // PUT YOUR CUSTOM CONFIG FIRST so it gets found before any other config.h
+                .headerSearchPath("../../Sources/libsmb2-config"),
                 .headerSearchPath("include"),
-                .headerSearchPath("include/apple"),
-                .headerSearchPath("include/smb2"),
+                .headerSearchPath("include/smb2"), 
                 .headerSearchPath("lib"),
                 .define("_U_", to: "__attribute__((unused))"),
                 .define("HAVE_CONFIG_H", to: "1"),
-                .define("HAVE_LIBKRB5", to: "1"),  // Enables Kerberos/GSSAPI in libsmb2
+                .define("HAVE_LIBKRB5", to: "1"),
+                .define("HAVE_GSSAPI_GSSAPI_H", to: "1"),
+                .define("__APPLE__", to: "1"),
             ],
             linkerSettings: [
-                .linkedFramework("GSS"),  // Links to iOS/macOS/tvOS GSS framework for built-in Kerberos
+                .linkedFramework("GSS"),
             ]
         ),
         .target(
